@@ -1,0 +1,60 @@
+<!-- gestion-usuario.component.html -->
+<section>
+  <h2>Programa lista de Usuarios</h2>
+  <br><br>
+  <form #usuarioForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+    <div>
+      <label for="nombre">Digite su nombre:</label>
+      <br>
+      <input type="text" id="nombre" [(ngModel)]="usuario.nombre" name="nombre" required #nombre="ngModel">
+      <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+        <small *ngIf="nombre.errors?.['required']">Nombre es requerido.</small>
+      </div>
+    </div>
+    
+    <div>
+      <label for="edad">Digite su edad:</label>
+      <br>
+      <input type="number" id="edad" [(ngModel)]="usuario.edad" name="edad" required #edad="ngModel" min="10">
+      <div *ngIf="edad.invalid && (edad.dirty || edad.touched)">
+        <small *ngIf="edad.errors?.['required']">Edad es requerida.</small>
+        <small *ngIf="edad.errors?.['min']">Edad mínima es 18.</small>
+      </div>
+    </div>
+    
+    <div>
+      <label for="dpi">Digite su DPI:</label>
+      <br>
+      <input type="text" id="dpi" [(ngModel)]="usuario.dpi" name="dpi" required #dpi="ngModel" pattern="^\d{13}$">
+      <div *ngIf="dpi.invalid && (dpi.dirty || dpi.touched)">
+        <small *ngIf="dpi.errors?.['required']">DPI es requerido.</small>
+        <small *ngIf="dpi.errors?.['pattern']">DPI debe tener 13 dígitos numéricos.</small>
+      </div>
+    </div>
+    
+    <button type="submit" [disabled]="usuarioForm.invalid">{{ editIndex === -1 ? 'Ingresar' : 'Actualizar' }}</button>
+  </form>
+  
+  <h3>Usuarios Registrados</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>DPI</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usuarios; let i = index">
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.edad }}</td>
+        <td>{{ user.dpi }}</td>
+        <td>
+          <button (click)="onEdit(i)">Editar</button>
+          <button (click)="onDelete(i)">Borrar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
